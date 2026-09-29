@@ -22,7 +22,40 @@ const bot_token = "توکن_دریافتی_از_بات‌فادر";
 const chat_id = "چت_آیدی_دریافتی_از_یوزراینفوبات";
 ```
 
-سپس کد را در پنل **Cloudflare Workers** مستقر (Deploy) کرده و دامنه یا آدرس Worker خود را کپی کنید.
+---
+
+### ۳. ساخت و اتصال Cloudflare KV
+
+در پنل **Cloudflare** یک KV Namespace جدید بسازید.
+
+نام Namespace می‌تواند دلخواه باشد، اما هنگام اتصال آن به Worker باید نام Binding را دقیقاً به شکل زیر قرار دهید:
+
+```text
+CHAT_KV
+```
+
+سپس KV ساخته‌شده را به Worker خود **Bind** کنید.
+
+در تنظیمات Worker به بخش:
+
+**Settings → Bindings**
+
+بروید و یک **KV Namespace Binding** اضافه کنید:
+
+```text
+Variable name: CHAT_KV
+KV namespace: KV ساخته‌شده
+```
+
+> **مهم:** نام Binding باید دقیقاً `CHAT_KV` باشد، زیرا Worker از همین نام برای دسترسی به KV استفاده می‌کند.
+
+---
+
+### ۴. Deploy کردن Worker
+
+حالا `worker.js` را در پنل **Cloudflare Workers** مستقر (Deploy) کنید.
+
+پس از Deploy، آدرس Worker خود را کپی کنید.
 
 مثال:
 
@@ -32,7 +65,7 @@ https://your-worker.workers.dev
 
 ---
 
-### ۳. تنظیم Webhook تلگرام
+### ۵. تنظیم Webhook تلگرام
 
 برای اتصال ربات تلگرام به Cloudflare Worker، آدرس زیر را یک بار در مرورگر خود باز کنید:
 
@@ -46,7 +79,7 @@ https://your-worker.workers.dev/init
 
 ---
 
-### ۴. تنظیم Frontend (`client.html`)
+### ۶. تنظیم Frontend (`client.html`)
 
 فایل `client.html` را باز کرده و در ابتدای بخش اسکریپت، مقدار `WORKER_URL` را برابر با آدرس Worker خود قرار دهید:
 
